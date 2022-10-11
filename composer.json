@@ -1,0 +1,20 @@
+{
+  "name": "karpovich/knowledge_city_test",
+  "description": "Test task for Knowledge City company",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Nikita Karpovich",
+      "email": "obliviousnick@gmail.com"
+    }
+  ],
+  "require": {
+
+  },
+  "autoload": {
+    "psr-4": {
+      "KnowledgeCity\\": "src/KnowledgeCity"
+    }
+  }
+}
