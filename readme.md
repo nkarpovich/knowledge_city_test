@@ -7,4 +7,4 @@ docker-compose up
 ```
 Application should be available at http://localhost:8000/
 <br>
-For simplicity i am not using .env file with variables
+## Additional information
