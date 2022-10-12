@@ -11,7 +11,7 @@ use PDO;
  */
 class DataBase
 {
-    private static $instance = null;
+    private static ?self $instance = null;
 
     protected PDO $db;
 

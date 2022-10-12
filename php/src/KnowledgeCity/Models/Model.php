@@ -1,6 +1,10 @@
 <?php
 
-namespace KnowledgeCity;
+namespace KnowledgeCity\Models;
+
+use KnowledgeCity\DataBase;
+use KnowledgeCity\Exceptions\Http500Exception;
+use KnowledgeCity\Pagination;
 
 abstract class Model
 {
@@ -11,6 +15,22 @@ abstract class Model
         $db = DataBase::instance();
         $sql = 'SELECT * FROM ' . static::TABLE;
         return ['data'=>$db->query($sql, static::class)];
+    }
+
+    /**
+     * @throws Http500Exception
+     */
+    public static function find(array $params): array {
+        $db = DataBase::instance();
+        $sql = 'SELECT * FROM ' . static::TABLE.' WHERE ';
+        $data = [];
+        $whereStatements = [];
+        foreach ($params as $fieldName=>$value){
+            $data[':' . $fieldName] = $value;
+            $whereStatements[] = $fieldName.' = :'.$fieldName;
+        }
+        $sql.=implode(' AND ',$whereStatements);
+        return $db->query($sql,static::class,$data);
     }
 
     public static function paginate(int $page=1, int $perPage=5, string $path = ''): array{
