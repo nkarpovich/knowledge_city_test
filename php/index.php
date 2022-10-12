@@ -2,14 +2,15 @@
 /*
 Register The Auto Loader
 */
+require __DIR__.'/vendor/autoload.php';
 
-use KnowledgeCity\DataBase;
+use PHPRouter\RouteCollection;
+use PHPRouter\Router;
+use PHPRouter\Route;
 
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
-require __DIR__.'/vendor/autoload.php';
+error_reporting(E_ERROR);
 
 /*
  * Set the env variables
@@ -20,8 +21,18 @@ $dotenv->load();
 /*
  * Start the application
  */
-//$controller->processRequest($_SERVER["REQUEST_METHOD"]);
+$collection = new RouteCollection();
 
-$db = DataBase::instance();
-$users = \KnowledgeCity\Models\User::findAll();
-var_dump($users);
+$collection->attachRoute(new Route('/users/', array(
+    '_controller' => 'KnowledgeCity\Controllers\UserController::indexAction',
+    'methods' => 'GET'
+)));
+
+/*$collection->attachRoute(new Route('/', array(
+    '_controller' => '\KnowledgeCity\Controllers\UserController::indexAction',
+    'methods' => 'GET'
+)));*/
+
+$router = new Router($collection);
+$router->setBasePath('/api');
+$route = $router->matchCurrentRequest();
