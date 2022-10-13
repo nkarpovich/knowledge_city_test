@@ -4,6 +4,10 @@ Project contains docker-compose.yml file for quick start, just execute:<br>
 ```
 docker-compose up
 ```
+and run composer in the php/ dir:
+```
+composer install
+```
 API should be available at http://localhost:8000/
 <br><br>
 To seed the database go to http://localhost:8000/api/seed/ <br>
