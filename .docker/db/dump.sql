@@ -28,5 +28,5 @@ CREATE TABLE `auth_tokens`
     `user_id` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
     `expires` DATETIME NOT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE KEY `userid` (`userid`)
+    UNIQUE KEY `user_id` (`user_id`)
 );
