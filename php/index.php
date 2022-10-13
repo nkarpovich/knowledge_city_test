@@ -29,7 +29,7 @@ session_start();
 $collection = new RouteCollection();
 
 $collection->attachRoute(new Route('/users/', array(
-    '_controller' => 'KnowledgeCity\Controllers\UserController::indexAction',
+    '_controller' => 'KnowledgeCity\Controllers\StudentController::indexAction',
     'methods' => 'GET'
 )));
 $collection->attachRoute(new Route('/seed/', array(
