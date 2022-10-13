@@ -75,7 +75,7 @@ class Authorization
                         $authToken->setSelector($selector);
                         $authToken->setToken(hash('sha256', $authenticator));
                         $authToken->setUserId($user[0]->id);
-                        $authToken->setExpires(date('Y-m-d\TH:i:s', time() + 864000));
+                        $authToken->setExpires(date('Y-m-d H:i:s', time() + 864000));
                         $authToken->insert();
                     }
                 }
