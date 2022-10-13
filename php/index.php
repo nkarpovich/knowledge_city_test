@@ -3,9 +3,9 @@ use PHPRouter\RouteCollection;
 use PHPRouter\Router;
 use PHPRouter\Route;
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ERROR);
+//ini_set('display_errors', '1');
+//ini_set('display_startup_errors', '1');
+//error_reporting(E_ERROR);
 
 /*
  * Register The Auto Loader
