@@ -9,7 +9,8 @@ class AuthController extends Controller
     public function loginAction() {
         if(!Authorization::isAuthorized()){
             $auth = new Authorization();
-            $auth->authorize($_POST['username'],$_POST['password']);
+            $rememberMe = isset($_POST['remember_me']);
+            $auth->authorize($_POST['username'],$_POST['password'],$rememberMe);
         };
     }
 

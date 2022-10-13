@@ -2,11 +2,14 @@
 namespace KnowledgeCity\Controllers;
 
 use KnowledgeCity\Authorization;
-use KnowledgeCity\Exceptions\AuthorizationException;
+use KnowledgeCity\Exceptions\Http401Exception;
 use KnowledgeCity\Models\User;
 
 class UserController extends Controller
 {
+    /**
+     * @throws Http401Exception
+     */
     public function indexAction() {
         if(Authorization::isAuthorized()) {
             $page = $_GET['page'];
@@ -14,7 +17,7 @@ class UserController extends Controller
             //        $perPage = $_GET['per_page'];
             echo json_encode(User::paginate($page, 5, $path), JSON_UNESCAPED_SLASHES);
         }else{
-            throw new AuthorizationException('Unauthorized user');
+            throw new Http401Exception('Unauthorized');
         }
     }
 }
