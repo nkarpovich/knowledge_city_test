@@ -98,4 +98,11 @@ abstract class Model
         $db = DataBase::instance();
         $db->execute($sql, $data);
     }
+
+    public static function delete($id){
+        $db = DataBase::instance();
+        $sql = 'DELETE FROM '. static::TABLE . ' WHERE ID=:id';
+        $data = [':id'=>$id];
+        $db->execute($sql, $data);
+    }
 }

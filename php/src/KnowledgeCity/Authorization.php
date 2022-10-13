@@ -2,6 +2,7 @@
 
 namespace KnowledgeCity;
 
+use KnowledgeCity\Exceptions\Http401Exception;
 use KnowledgeCity\Exceptions\Http500Exception;
 use KnowledgeCity\Exceptions\ValidationException;
 use KnowledgeCity\Models\AuthToken;
@@ -13,8 +14,10 @@ class Authorization
      * Check if user is authorized
      * @return bool
      * @throws Exceptions\Http500Exception
+     * @throws Http401Exception
      */
     public static function isAuthorized(): bool {
+
         if (isset($_SESSION['user_id'])) {
             return true;
         }
@@ -24,10 +27,16 @@ class Authorization
                     list($selector, $authenticator) = explode(':', $_COOKIE['remember']);
                     $params = ['selector' => $selector];
                     $authTokenRow = AuthToken::find($params);
-                    if (hash_equals($authTokenRow['token'], hash('sha256', base64_decode($authenticator)))) {
-                        $_SESSION['user_id'] = $authTokenRow['user_id'];
-                        return true;
+                    if(isset($authTokenRow[0]->token)) {
+                        if (hash_equals($authTokenRow[0]->token, hash('sha256', base64_decode($authenticator)))) {
+                            $_SESSION['user_id'] = $authTokenRow[0]->user_id;
+                            return true;
+                        }
+                    }else{
+                        throw new Http401Exception('Cookie is set incorrectly!', 401);
                     }
+                }catch (Http401Exception $e){
+                    throw $e;
                 }catch (\Exception){
                     throw new Http500Exception('Internal server error',500);
                 }
@@ -44,7 +53,7 @@ class Authorization
      * @param bool $rememberMe
      * @return void
      * @throws Http500Exception  if there is an error with DataBase query
-     * @throws ValidationException if login validation fails
+     * @throws ValidationException|Http401Exception if login validation fails
      */
     public function authorize(string $userName, string $password, bool $rememberMe = false) {
         if(!Authorization::isAuthorized()) {
@@ -86,9 +95,12 @@ class Authorization
      * Logout
      * @return void
      * @throws ValidationException|Http500Exception
+     * @throws Http401Exception
      */
     public function deleteAuth() {
         if(self::isAuthorized()) {
+            $authToken = AuthToken::find(['user_id'=>$_SESSION['user_id']]);
+            AuthToken::delete($authToken[0]->id);
             unset($_SESSION['user_id']);
             unset($_COOKIE['remember_user']);
             setcookie('remember_user', null, -1, '/');
