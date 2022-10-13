@@ -12,6 +12,12 @@ class Pagination
     private int $nextPage;
     private string $baseUrl;
 
+    /**
+     * @param int $page
+     * @param int $perPage
+     * @param int $total
+     * @param string $baseUrl
+     */
     public function __construct(int $page, int $perPage, int $total, string $baseUrl = '') {
         $this->setPage($page);
         $this->setPerPage($perPage);
@@ -31,6 +37,7 @@ class Pagination
 
     /**
      * @param int $page
+     * @return void
      */
     public function setPage(int $page): void {
         $this->page = $page;
@@ -50,6 +57,9 @@ class Pagination
         $this->lastPage = $lastPage;
     }
 
+    /**
+     * @return array
+     */
     public function getPaginationParams(): array {
         $res = [];
         $res['first_page_url'] = $this->getFirstPageUrl();
@@ -68,7 +78,7 @@ class Pagination
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getBaseUrl(): string {
         return $this->baseUrl;
@@ -96,7 +106,7 @@ class Pagination
     }
 
     /**
-     * @return int
+     * @return int|false
      */
     public function getPrevPage(): int|false {
         return $this->prevPage;
@@ -117,7 +127,7 @@ class Pagination
     }
 
     /**
-     * @return int
+     * @return int|false
      */
     public function getNextPage(): int|false {
         return $this->nextPage;

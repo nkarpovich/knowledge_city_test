@@ -6,10 +6,18 @@ use KnowledgeCity\DataBase;
 use KnowledgeCity\Exceptions\Http500Exception;
 use KnowledgeCity\Pagination;
 
+
+/**
+ * Base model class
+ */
 abstract class Model
 {
     protected const TABLE = '';
 
+    /**
+     * @return array
+     * @throws Http500Exception
+     */
     public static function findAll(): array
     {
         $db = DataBase::instance();
@@ -18,6 +26,8 @@ abstract class Model
     }
 
     /**
+     * @param array $params
+     * @return array
      * @throws Http500Exception
      */
     public static function find(array $params): array {
@@ -33,6 +43,13 @@ abstract class Model
         return $db->query($sql,static::class,$data);
     }
 
+    /**
+     * @param int $page
+     * @param int $perPage
+     * @param string $path
+     * @return array
+     * @throws Http500Exception
+     */
     public static function paginate(int $page=1, int $perPage=5, string $path = ''): array{
         $db = DataBase::instance();
         $totalCount = self::getTotalCount();
@@ -47,6 +64,10 @@ abstract class Model
         return array_merge($res,$paginationResponseParams);
     }
 
+    /**
+     * @return mixed
+     * @throws Http500Exception
+     */
     public static function getTotalCount(){
         $db = DataBase::instance();
         $totalSql = 'SELECT COUNT(*) as total FROM ' . static::TABLE;
@@ -54,6 +75,9 @@ abstract class Model
         return $totalRes[0]->total;
     }
 
+    /**
+     * @return void
+     */
     public function insert()
     {
         $props = get_object_vars($this);

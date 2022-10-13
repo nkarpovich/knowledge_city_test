@@ -28,17 +28,28 @@ class DataBase
     }
 
     /**
+     * executes prepared sql and return fecthAll result
+     * @param string $sql
+     * @param $class
+     * @param array $params
+     * @return array
      * @throws Http500Exception
      */
     public function query(string $sql, $class, array $params = []): array {
         $sth = $this->db->prepare($sql);
         $res = $sth->execute($params);
         if (!$res) {
-            throw new Http500Exception('Database query error: ' . $sql);
+            throw new Http500Exception('Database query error: ' . $sql,500);
         }
         return $sth->fetchAll(PDO::FETCH_CLASS, $class);
     }
 
+    /**
+     * executes SQL
+     * @param string $sql
+     * @param array $options
+     * @return bool
+     */
     public function execute(string $sql, array $options = []): bool {
         $statement = $this->db->prepare($sql);
         return $statement->execute($options);

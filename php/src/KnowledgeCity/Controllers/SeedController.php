@@ -52,7 +52,9 @@ class SeedController extends Controller
         "Alice" => "12345678"
     ];
 
-
+    /**
+     * @return void
+     */
     public static function indexAction() {
         $user = new User();
         foreach (self::$testUsers as $name=>$pass) {
